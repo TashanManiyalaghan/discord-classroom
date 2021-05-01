@@ -1,10 +1,10 @@
 import os
 import discord
 from discord.ext import commands
+from discord.utils import get
 from discord import member
 
 # client = commands.Bot(comman_prefix='$')
-
 # @client.event
 # async def on_ready():
 #     print("ClassroomBot is initialized")
@@ -19,14 +19,15 @@ class Classroom:
         Creates a Classroom object using the classroom name and class teacher
         """
         self.name = classroom_name
-        self.teacher = teacher
+        self.teacher_name = teacher
+        self.teacher_id = teacher.id
         self.classlist = []
     
     def __str__(self):
         """
         Generate a string representation of the Classroom object
         """
-        return (self.name + 'class will be taught by' + self.teacher)
+        return (str(self.name) + ' class will be taught by ' + str(self.teacher_name))
 
     def addstudent(self, discord_user_id):
         """
