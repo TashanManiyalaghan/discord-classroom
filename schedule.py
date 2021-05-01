@@ -45,6 +45,15 @@ class Schedule:
                 del self.events[index]
                 return
 
+    def checkEvents(self, datetime):
+        events = []
+        
+        for event in self.events:
+            if event.datetime == datetime:
+                events.append(event)
+
+        return events
+
     # String function to display the contents of the Schedule object.
     def __str__(self):
         return "\n".join([str(x) for x in self.events])
@@ -56,10 +65,16 @@ if __name__ == '__main__':
     schedule.addEvent('Hackathon', 2021, 4, 30, 19, 0, 'Hacking begins!')
     schedule.addEvent('Discord bot hosting', 2021, 5, 1, 21, 0, 'Workshop for hosting discord bots.')
     schedule.addEvent('Relationship advice', 2021, 5, 1, 17, 0, 'A relationship advice panel from single people.')
+    schedule.addEvent('Dinnertime', 2021, 4, 30, 19, 0, 'Time to eat')
 
     print(schedule, end = '\n\n')
 
-    print('Try to delete the Relationship advice event\n')
+    datetime = datetime(2021, 5, 1, 17, 0, 0, 0)
+    print('Check what events are happening on', datetime)
+    for event in schedule.checkEvents(datetime):
+        print(event)
 
-    schedule.removeEvent('Relationship advice')
-    print(schedule)
+    current = datetime.now().replace(second = 0, microsecond = 0)
+    print('\nCheck what events are happening now', current)
+    for event in schedule.checkEvents(current):
+        print(event)
