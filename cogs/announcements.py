@@ -47,8 +47,6 @@ class Announcements(commands.Cog):
                 for event in self.schedule.checkCurrent():
                     await self.channel.send(f'\t{event}')
                     self.schedule.removeEvent(event.name)
-            else:
-                await self.channel.send('There are no events taking place right now')
 
 # Cog setup
 def setup(client):
