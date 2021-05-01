@@ -26,7 +26,7 @@ class Schedule:
 
         # String function to display the contents of the Event object.
         def __str__(self):
-            return f'{self.datetime.day:02}/{self.datetime.month:02}/{self.datetime.year:04} {self.datetime.hour:02}:{self.datetime.minute:02} {self.name}:\n\t{self.desc}'
+            return f'{self.datetime.day:02}/{self.datetime.month:02}/{self.datetime.year:04} {self.datetime.hour:02}:{self.datetime.minute:02} {self.name}: {self.desc}'
 
     # Constructor for the Schedule class, which will keep track of all the events for a single instance.
     def __init__(self):
@@ -37,6 +37,7 @@ class Schedule:
         event = self.Event(name, year, month, day, hour, minute, desc)
         self.events.append(event)
         self.events.sort()
+        return event
 
     # removeEvent function to remove a pre-existing event from the Schedule object.
     def removeEvent(self, name):
