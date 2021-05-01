@@ -54,6 +54,9 @@ class Schedule:
 
         return events
 
+    def checkCurrent(self):
+        return self.checkEvents(datetime.now().replace(second = 0, microsecond = 0))
+
     # String function to display the contents of the Schedule object.
     def __str__(self):
         return "\n".join([str(x) for x in self.events])
