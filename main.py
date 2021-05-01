@@ -18,7 +18,7 @@ async def on_ready():
 
 @client.command()
 async def create_classroom(ctx, name):
-    classroom = Classroom(name, ctx.author)
+    classroom = Classroom(name, ctx.author.id)
     category = await ctx.guild.create_category(name)
     announcementsChannel = await ctx.guild.create_text_channel('announcements', category = category)
     client.get_cog('Announcements').channel = announcementsChannel
