@@ -16,13 +16,6 @@ client = commands.Bot(command_prefix = '$')
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
-@client.command()
-async def create_classroom(ctx, name):
-    classroom = Classroom(name, ctx.author.id)
-    category = await ctx.guild.create_category(name)
-    announcementsChannel = await ctx.guild.create_text_channel('announcements', category = category)
-    client.get_cog('Announcements').channel = announcementsChannel
-
 # load command for loading the cog with the provided extension
 @client.command()
 async def load(ctx, extension):
