@@ -43,7 +43,7 @@ class Announcements(commands.Cog):
             currentEvents = self.schedule.checkCurrent()
 
             if len(currentEvents) > 0:
-                await self.channel.send('The following event(s) are taking place right now:')
+                await self.channel.send('@here The following event(s) are taking place right now:')
                 for event in self.schedule.checkCurrent():
                     await self.channel.send(f'\t{event}')
                     self.schedule.removeEvent(event.name)
