@@ -2,4 +2,7 @@
 .env
 
 # Ignore vscode files
-/.vscode 
+/.vscode
+
+# Ignore Python cache files in the cogs/ directory
+*__pycache__*
