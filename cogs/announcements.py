@@ -2,11 +2,12 @@ import discord
 from discord.ext import commands, tasks
 from schedule import *
 
-class Temp(commands.Cog):
+class Announcements(commands.Cog):
 
     def __init__(self, client):
         self.client = client
         self.schedule = Schedule()
+        self.channel = None
         # Begin the tasks.loop for ping_event command when the cog is loaded.
         self.ping_event.start()
 
@@ -14,10 +15,8 @@ class Temp(commands.Cog):
     def cog_unload(self):
         self.ping_event.cancel()
 
-    # Basic Discord command
-    @commands.command(aliases = ['hi', 'hey'])
-    async def hello(self, ctx):
-        await ctx.send('Hello')
+    def setChannel(self, channel):
+        self.channel = channel
 
     # Command to create a new event in the Schedule object.
     @commands.command()
@@ -40,11 +39,17 @@ class Temp(commands.Cog):
     # NOTE: Pinging system for when an event is taking place is still required.
     @tasks.loop(seconds = 60)
     async def ping_event(self):
-        print('The following event(s) are taking place:')
-        for event in self.schedule.checkCurrent():
-            print(f'\t{event}\n')
-            self.schedule.removeEvent(event.name)
+        if not (self.channel is None):
+            currentEvents = self.schedule.checkCurrent()
+
+            if len(currentEvents) > 0:
+                await self.channel.send('The following event(s) are taking place right now:')
+                for event in self.schedule.checkCurrent():
+                    await self.channel.send(f'\t{event}')
+                    self.schedule.removeEvent(event.name)
+            else:
+                await self.channel.send('There are no events taking place right now')
 
 # Cog setup
 def setup(client):
-    client.add_cog(Temp(client))
+    client.add_cog(Announcements(client))
