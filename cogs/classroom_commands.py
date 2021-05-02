@@ -33,7 +33,7 @@ class classroom_cogs(commands.Cog):
         self.resourcesChannel = await ctx.guild.create_text_channel('resources', overwrites=overwrites, category = category)
         self.commandsChannel = await ctx.guild.create_text_channel('commands')
         self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites=overwrites, category = category)
-        self.help_classChannel = await ctx.guild.create_text_channel('help_class', overwrites=overwrites, category = category)
+        self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites=overwrites, category = category)
 
         #delete call line from repective text channel
         await ctx.channel.purge(limit = 1)
