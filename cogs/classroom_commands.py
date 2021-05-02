@@ -1,55 +1,57 @@
+# Discord.py, Discord.ext, and Classroom class imports
 import discord
 from discord.ext import commands
 from classroom import *
 
 class classroom_cogs(commands.Cog):
 
+    # Constructor to initialize the client attribute
     def __init__(self, client):
         self.client = client
     
     # Command to create a new classroom
     @commands.command()
     async def create_classroom(self, ctx, name):
-        self.class_1 = Classroom(name, ctx.author)
-        category = await ctx.guild.create_category(name)
-        self.role = await ctx.guild.create_role(name = 'Student')
-        await category.set_permissions(self.role, read_messages=True, send_messages=False)
-        await category.set_permissions(ctx.guild.default_role, read_messages=False, send_messages=False)
+        self.classroom = Classroom(name, ctx.author)
 
-        #create messages for respective channels
-        msg=name + " class created. You're now the teacher {}".format(ctx.author.mention)
-        other_msg = "Use the commands channel for all Classroom bot commands"
+        # Create the appropriate category and rols, and set permissions for the category
+        self.category = await ctx.guild.create_category(name)
+        self.role = await ctx.guild.create_role(name = 'Student')
+        await self.category.set_permissions(self.role, read_messages=True, send_messages=False)
+        await self.category.set_permissions(ctx.guild.default_role, read_messages=False, send_messages=False)
         
-        #overwrite the permissions
-        overwrites = {self.role:discord.PermissionOverwrite(read_messages=True, send_messages=True),
-        ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False, send_messages=False)
+        # Create an overwrites dictionary to contain the permission overwrites for various roles
+        overwrites = {
+            self.role: discord.PermissionOverwrite(read_messages = True, send_messages = True),
+            ctx.guild.default_role: discord.PermissionOverwrite(read_messages = False, send_messages = False)
         }
 
-        #create text channels
+        # Create appropriate text channels and save them as local attributes so they can be accessed if required
+        self.commandsChannel = await ctx.guild.create_text_channel('commands')
         self.welcomeChannel = await ctx.guild.create_text_channel('welcome', category = category)
         self.announcementsChannel = await ctx.guild.create_text_channel('announcements', category = category)
-        self.client.get_cog('Announcements').channel = self.announcementsChannel
-        self.discussionsChannel = await ctx.guild.create_text_channel('discussions', overwrites=overwrites, category = category)
-        self.resourcesChannel = await ctx.guild.create_text_channel('resources', overwrites=overwrites, category = category)
-        self.commandsChannel = await ctx.guild.create_text_channel('commands')
-        self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites=overwrites, category = category)
-        self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites=overwrites, category = category)
+        self.discussionsChannel = await ctx.guild.create_text_channel('discussions', overwrites = overwrites, category = category)
+        self.resourcesChannel = await ctx.guild.create_text_channel('resources', overwrites = overwrites, category = category)
+        self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites = overwrites, category = category)
+        self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites = overwrites, category = category)
 
-        #delete call line from repective text channel
+        # Set the channel for the announcements cog to the announcements channel just made
+        self.client.get_cog('Announcements').channel = self.announcementsChannel
+
+        # Delete the $create_classroom <name> line from the channel the command was invoked in
         await ctx.channel.purge(limit = 1)
 
-        #send messages to respective channels
-        await self.commandsChannel.send(msg)
-        await self.commandsChannel.send(other_msg)
+        # Send appropriate messages to the various channels
+        await self.welcomeChannel.send(f'Welcome everyone to {name} class, taught by {ctx.author}')
+        await self.commandsChannel.send(f'{name} class created. You\'re now the teacher {ctx.author.mention}'')
+        await self.commandsChannel.send('Use the commands channel for all Classroom bot commands')
 
-    # Use addstudent method to assign new memebers to class list
+    # Create a cog listener for the on_member_join event to add new students to the class list
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        self.class_1.addstudent(member.id)
-        msg = member.name + ' has joined the ' + self.class_1.name + ' class as a student'
+        self.classroom.addstudent(member.id)
         await member.add_roles(self.role)
-        await self.welcomeChannel.send(msg)
-    
+        await self.welcomeChannel.send(f'{member.name} has joined the {self.classroom.name} class as a student')
     
 # Cog setup
 def setup(client):
