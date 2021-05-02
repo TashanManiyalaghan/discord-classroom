@@ -32,7 +32,33 @@ class Announcements(commands.Cog):
         time = [int(x) for x in paramList[3].split(':')]
 
         event = self.schedule.addEvent(name, desc, date[0], date[1], date[2], time[0], time[1])
-        await ctx.send(f'The following event was created: \n\t{event}')
+
+        embed = discord.Embed(
+            title = name,
+            description = desc,
+            colour = discord.Colour.blue()
+        )
+
+        embed.set_author(
+            name = ctx.author.display_name,
+            icon_url = ctx.author.avatar_url
+        )
+
+        embed.set_thumbnail(url = "https://www.raytownschools.org//cms/lib/MO02210312/Centricity/Domain/4/support-icon-calendar.png")
+
+        embed.add_field(
+            name = "Date",
+            value = paramList[2],
+            inline = False
+        )
+
+        embed.add_field(
+            name = "Time",
+            value = f'{time[0] % 12}:{time[1]} {"pm" if (time[0] // 12 == 1) else "am"}',
+            inline = False
+        )
+
+        await ctx.send(embed = embed)
 
     # Command to display in the console the events of the Schedule object.
     @commands.command()
