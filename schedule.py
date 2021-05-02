@@ -8,7 +8,7 @@ class Schedule:
     class Event:
 
         # Constructor for Event class to create attributes, as well as instantiate datetime object.
-        def __init__(self, name, year, month, day, hour, minute, desc):
+        def __init__(self, name, day, month, year, hour, minute, desc):
             self.name = name
             self.datetime = datetime(year, month, day, hour, minute, 0, 0)
             self.desc = desc
@@ -26,7 +26,7 @@ class Schedule:
 
         # String function to display the contents of the Event object.
         def __str__(self):
-            return f'{self.datetime.day:02}/{self.datetime.month:02}/{self.datetime.year:04} {self.datetime.hour:02}:{self.datetime.minute:02} {self.name}: {self.desc}'
+            return f'[{self.datetime.hour:02}:{self.datetime.minute:02}] {self.datetime.day:02}/{self.datetime.month:02}/{self.datetime.year:04} - {self.name}: {self.desc}'
 
     # Constructor for the Schedule class, which will keep track of all the events for a single instance.
     def __init__(self):
