@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 from quiz import *
 from Helper import *
+from latex import *
 
 class Quizzes(commands.Cog):
     def __init__(self, client):
@@ -30,6 +31,10 @@ class Quizzes(commands.Cog):
             responses = paramList[4:]
             self.quizzes[quiz].addMultipleChoice(question, int(answer), responses)
             await ctx.send(f'Added multiple choice "{question}" to {quiz}')
+
+        elif qType == "latex":
+            self.quizzes[quiz].addLatex(question, get_latex(answer))
+            await ctx.send(f'Added LaTeX question {question} to {quiz}')
 
     @commands.command()
     async def show_response(self, ctx, *, params):
@@ -70,5 +75,12 @@ class Quizzes(commands.Cog):
             else:
                 await ctx.send('Wrong answer.')
         
+        elif type(self.currentQuiz.questions[self.currentQuestion]) is Latex:
+            if get_latex(response) - self.currentQuiz.questions[self.currentQuestion].answer == 0:
+                await ctx.send('Correct answer.')
+            
+            else:
+                await ctx.send('Wrong answer.')
+
 def setup(client):
     client.add_cog(Quizzes(client))
