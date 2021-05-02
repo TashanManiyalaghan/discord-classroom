@@ -63,7 +63,24 @@ class Announcements(commands.Cog):
     # Command to display in the console the events of the Schedule object.
     @commands.command()
     async def view_schedule(self, ctx):
-        await ctx.send(str(self.schedule))
+        embed = discord.Embed(
+            title = 'All Events',
+            colour = discord.Colour.blue()
+        )
+
+        embed.set_author(
+            name = ctx.author.display_name,
+            icon_url = ctx.author.avatar_url
+        )
+
+        for event in self.schedule.events:
+            embed.add_field(
+                name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {event.datetime.hour % 12}:{event.datetime.minute} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
+                value = f'{event.name}:\n\t{event.desc}',
+                inline = False
+            )
+
+        await ctx.send(embed = embed)
 
     # Tasks loop that will refresh every minute and ping any events currently taking place.
     @tasks.loop(seconds = 60)
