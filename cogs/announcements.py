@@ -34,7 +34,7 @@ class Announcements(commands.Cog):
         event = self.schedule.addEvent(name, desc, date[0], date[1], date[2], time[0], time[1])
 
         embed = discord.Embed(
-            title = name,
+            title = f'Event "{name}" created',
             description = desc,
             colour = discord.Colour.blue()
         )
@@ -58,7 +58,7 @@ class Announcements(commands.Cog):
             inline = False
         )
 
-        await ctx.send(embed = embed)
+        await self.channel.send(embed = embed)
 
     # Command to display in the console the events of the Schedule object.
     @commands.command()
