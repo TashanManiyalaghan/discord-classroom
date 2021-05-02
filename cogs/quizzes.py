@@ -96,10 +96,10 @@ class Quizzes(commands.Cog):
                     
             elif type(self.currentQuiz.questions[self.currentQuestion]) is Latex:
                 if get_latex(response) - self.currentQuiz.questions[self.currentQuestion].answer == 0:
-                    await ctx.send('Correct answer.')
+                    await ctx.author.send('Correct answer.')
             
                 else:
-                    await ctx.send('Wrong answer.')
+                    await ctx.author.send('Wrong answer.')
             
             self.answered.append(ctx.author)
 
