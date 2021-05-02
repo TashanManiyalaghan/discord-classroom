@@ -18,10 +18,10 @@ if (input("delete? ") == "y"):
 '''
 
 if __name__ == '__main__':
-    string1 = "\frac{1}{10}+x"
-    string2 = "\frac{1+10x}{10}"
+    string1 = "\frac{4}{3} x *r^{3}"
+    string2 = "\frac{4 x * r^{3}}{3}"
 
-    expr1 = parse_latex(str_to_raw(string1))
-    expr2 = parse_latex(str_to_raw(string2))
+    expr1 = get_latex(string1)
+    expr2 = get_latex(string2)
 
     print(simplify(expr1 - expr2) == 0)

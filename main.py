@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 project_folder = os.path.expanduser('./')
 load_dotenv(os.path.join(project_folder, '.env'))
 
-intents = discord.Intents(messages=True, guilds=True, members=True)
+intents = discord.Intents(messages=True, guilds=True, members=True, reactions=True)
 client = commands.Bot(command_prefix = '$', intents=intents)
 
 # on_ready event, for when the bot logs onto server
