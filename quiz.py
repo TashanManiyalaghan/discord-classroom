@@ -20,6 +20,14 @@ class MultipleChoice:
         
         return temp
 
+class Latex:
+    def __init__(self, question, answer):
+        self.question = question
+        self.answer = answer
+
+    def __str__(self):
+        return self.question
+
 class Quiz:
     def __init__(self):
         self.questions = []
@@ -34,11 +42,19 @@ class Quiz:
         self.questions.append(mc)
         return
 
+    def addLatex(self, question, answer):
+        latex = Latex(question, answer)
+        self.questions.append(latex)
+        return
+
     def revealAnswer(self, number):
         if type(self.questions[number - 1]) is MultipleChoice:
             return self.questions[number - 1].responses[self.questions[number - 1].answer - 1]
 
         elif type(self.questions[number - 1]) is Question:
+            return self.questions[number - 1].answer
+
+        elif type(self.questions[number - 1]) is Latex:
             return self.questions[number - 1].answer
 
 if __name__ == '__main__':
