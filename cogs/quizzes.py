@@ -60,11 +60,14 @@ class Quizzes(commands.Cog):
             inline = False
         )
 
-        embed.add_field(
-            name = 'Answer',
-            value = f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}',
-            inline = False
-        )
+        if type(self.quizzes[quiz].questions[int(question) - 1]) is Latex:
+
+        else:
+            embed.add_field(
+                name = 'Answer',
+                value = f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}',
+                inline = False
+            )
 
         await ctx.send(embed = embed)
 
@@ -118,11 +121,14 @@ class Quizzes(commands.Cog):
             inline = False
         )
 
-        embed.add_field(
-            name = f'Question {self.currentQuestion + 1}',
-            value = f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion + 1)}',
-            inline = False
-        )
+        if type(self.quizzes[quiz].questions[int(question) - 1]) is Latex:
+
+        else:
+            embed.add_field(
+                name = f'Question {self.currentQuestion + 1}',
+                value = f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion + 1)}',
+                inline = False
+            )
 
         await self.quizChannel.send(embed = embed)
 
