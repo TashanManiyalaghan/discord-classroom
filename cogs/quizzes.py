@@ -95,14 +95,13 @@ class Quizzes(commands.Cog):
                     await ctx.author.send('Wrong answer.')
                     
             elif type(self.currentQuiz.questions[self.currentQuestion]) is Latex:
-                if get_latex(response) - self.currentQuiz.questions[self.currentQuestion].answer == 0:
+                if simplify(get_latex(response) - self.currentQuiz.questions[self.currentQuestion].answer) == 0:
                     await ctx.author.send('Correct answer.')
             
                 else:
                     await ctx.author.send('Wrong answer.')
             
             self.answered.append(ctx.author)
-
 
 def setup(client):
     client.add_cog(Quizzes(client))
