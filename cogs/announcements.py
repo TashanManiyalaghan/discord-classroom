@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 from schedule import *
+from Helper import *
 
 class Announcements(commands.Cog):
 
@@ -21,13 +22,13 @@ class Announcements(commands.Cog):
     # Command to create a new event in the Schedule object.
     @commands.command()
     async def add_event(self, ctx, *, params):
-        paramList = params.split()
+        paramList = parse_inputs(params)
         name = paramList[0]
-        date = paramList[1].split('/')
-        time = paramList[2].split(':')
-        desc = ' '.join(paramList[3:])
+        date = [int(x) for x in paramList[1].split('/')]
+        time = [int(x) for x in paramList[2].split(':')]
+        desc = paramList[3]
 
-        event = self.schedule.addEvent(name, int(date[0]), int(date[1]), int(date[2]), int(time[0]), int(time[1]), desc)
+        event = self.schedule.addEvent(name, date[0], date[1], date[2], time[0], time[1], desc)
         await ctx.send(f'The following event was created: \n\t{event}')
 
     # Command to display in the console the events of the Schedule object.

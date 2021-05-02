@@ -23,6 +23,7 @@ class classroom_cogs(commands.Cog):
         msg = member.name + 'has joined the ' + self.class_1.name + ' class as a student'
         await self.newstudentsChannel.send(msg)
     
+
 # Cog setup
 def setup(client):
     client.add_cog(classroom_cogs(client))
