@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 project_folder = os.path.expanduser('./')
 load_dotenv(os.path.join(project_folder, '.env'))
 
-client = commands.Bot(command_prefix = '$')
+intents = discord.Intents(messages=True, guilds=True, members=True)
+client = commands.Bot(command_prefix = '$', intents=intents)
 
 # on_ready event, for when the bot logs onto server
 @client.event
@@ -40,6 +41,5 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         # Load only .py cogs and strip the extension
         client.load_extension(f'cogs.{filename[:-3]}')
-
 
 client.run(os.getenv('TOKEN'))
