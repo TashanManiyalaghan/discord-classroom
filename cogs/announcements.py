@@ -75,11 +75,12 @@ class Announcements(commands.Cog):
 
         for event in self.schedule.events:
             embed.add_field(
-                name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {event.datetime.hour % 12}:{event.datetime.minute} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
+                name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {(event.datetime.hour % 12):02}:{event.datetime.minute:02} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
                 value = f'{event.name}:\n\t{event.desc}',
                 inline = False
             )
 
+        await ctx.channel.purge(limit = 1)
         await ctx.send(embed = embed)
 
     # Tasks loop that will refresh every minute and ping any events currently taking place.
@@ -89,11 +90,21 @@ class Announcements(commands.Cog):
             currentEvents = self.schedule.checkCurrent()
             # Appropriately format the output to display each event
             if len(currentEvents) > 0:
-                string = '@here The following event(s) are taking place right now:'
+
+                embed = discord.Embed(
+                    title = 'The following event(s) are taking place right now:',
+                    colour = discord.Colour.blue()
+                )
+
                 for event in self.schedule.checkCurrent():
-                    string = f'{string}\n\t{event}'
+                    embed.add_field(
+                        name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {(event.datetime.hour % 12):02}:{event.datetime.minute:02} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
+                        value = f'{event.name}:\n\t{event.desc}',
+                        inline = False
+                    )
                     self.schedule.removeEvent(event.name)
-                await self.channel.send(string)
+
+                await self.channel.send("@here", embed = embed)
 
 # Cog setup
 def setup(client):
