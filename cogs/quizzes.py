@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 from quiz import *
+from Helper import *
 
 class Quizzes(commands.Cog):
     def __init__(self, client):
@@ -14,7 +15,7 @@ class Quizzes(commands.Cog):
 
     @commands.command()
     async def add_question(self, ctx, *, params):
-        paramList = params.split('|')
+        paramList = parse_inputs(params)
 
         quiz = paramList[0]
         qType = paramList[1]
@@ -32,7 +33,7 @@ class Quizzes(commands.Cog):
 
     @commands.command()
     async def show_response(self, ctx, *, params):
-        paramsList = params.split('|')
+        paramsList = parse_inputs(params)
         quiz = paramsList[0]
         question = paramsList[1]
         await ctx.send(f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}')
