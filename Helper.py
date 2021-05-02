@@ -25,6 +25,9 @@ def parse_inputs(string):
             params.append(param)
             param = ''
 
+        if not(param in params) and index + 1 == len(string):
+            params.append(param)
+
     return params
 
 # str_to_raw function to convert a provided string input to a raw_string, which maintains escape characters for LaTeX.
