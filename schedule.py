@@ -10,8 +10,8 @@ class Schedule:
         # Constructor for Event class to create attributes, as well as instantiate datetime object.
         def __init__(self, name, desc, day, month, year, hour, minute):
             self.name = name
-            self.datetime = datetime(year, month, day, hour, minute, 0, 0)
             self.desc = desc
+            self.datetime = datetime(year, month, day, hour, minute, 0, 0)
 
         # lt, gt, and eq comparison operators so that two instances of the Event object can be compared and sorted.
 
@@ -34,7 +34,7 @@ class Schedule:
 
     # addEvent function to add a new event to the Schedule object, and then sort the events appropriately.
     def addEvent(self, name, desc, year: int, month: int, day: int, hour: int, minute: int):
-        event = self.Event(name, year, month, day, hour, minute, desc)
+        event = self.Event(name, desc, year, month, day, hour, minute)
         self.events.append(event)
         self.events.sort()
         return event
@@ -46,39 +46,18 @@ class Schedule:
                 del self.events[index]
                 return
 
+    # checkEvents function to check events taking place at a specific date-time.
     def checkEvents(self, datetime):
         events = []
-        
         for event in self.events:
             if event.datetime == datetime:
                 events.append(event)
-
         return events
 
+    # checkCurrent function checks events taking place at the current time, by invoking checkEvents with datetime.now().
     def checkCurrent(self):
         return self.checkEvents(datetime.now().replace(second = 0, microsecond = 0))
 
     # String function to display the contents of the Schedule object.
     def __str__(self):
         return "\n".join([str(x) for x in self.events])
-
-# Testing goes here.
-if __name__ == '__main__':
-
-    schedule = Schedule()
-    schedule.addEvent('Hackathon', 2021, 4, 30, 19, 0, 'Hacking begins!')
-    schedule.addEvent('Discord bot hosting', 2021, 5, 1, 21, 0, 'Workshop for hosting discord bots.')
-    schedule.addEvent('Relationship advice', 2021, 5, 1, 17, 0, 'A relationship advice panel from single people.')
-    schedule.addEvent('Dinnertime', 2021, 4, 30, 19, 0, 'Time to eat')
-
-    print(schedule, end = '\n\n')
-
-    datetime = datetime(2021, 5, 1, 17, 0, 0, 0)
-    print('Check what events are happening on', datetime)
-    for event in schedule.checkEvents(datetime):
-        print(event)
-
-    current = datetime.now().replace(second = 0, microsecond = 0)
-    print('\nCheck what events are happening now', current)
-    for event in schedule.checkEvents(current):
-        print(event)
