@@ -41,7 +41,7 @@ class Quizzes(commands.Cog):
         elif qType == "latex":
             self.quizzes[quiz].addLatex(question, get_latex(answer))
             await ctx.send(f'Added LaTeX question {question} to {quiz}')
-            preview(get_latex(answer), viewer='file', filename='image.png')
+            preview(get_latex(answer), viewer = 'file', filename = 'image.png')
 
     # show_response command which will display the correct answer when called.
     @commands.command()
@@ -61,14 +61,11 @@ class Quizzes(commands.Cog):
             inline = False
         )
 
-        if type(self.quizzes[quiz].questions[int(question) - 1]) is Latex:
-            embed.set_image(url = "attachment://../image.png")
-        else:
-            embed.add_field(
-                name = 'Answer',
-                value = f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}',
-                inline = False
-            )
+        embed.add_field(
+            name = 'Answer',
+            value = f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}',
+            inline = False
+        )
         await ctx.send(embed = embed)
 
     # start_quiz command to begin execution of the quiz.
@@ -121,14 +118,11 @@ class Quizzes(commands.Cog):
             inline = False
         )
 
-        if type(self.currentQuiz.questions[self.currentQuestion]) is Latex:
-            embed.set_image(url = "attachment://../image.png")
-        else:
-            embed.add_field(
-                name = f'Question {self.currentQuestion + 1}',
-                value = f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion + 1)}',
-                inline = False
-            )
+        embed.add_field(
+            name = f'Question {self.currentQuestion + 1}',
+            value = f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion + 1)}',
+            inline = False
+        )
 
         await self.quizChannel.send(embed = embed)
 
