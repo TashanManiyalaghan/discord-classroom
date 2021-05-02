@@ -24,7 +24,7 @@ class Notes(commands.Cog):
 
         # Create a Discord embed and save it to the list of notes
         noteTitle = "Note #%s: %s" %(noteNum,noteName)
-        Nembed = discord.Embed(title = lecTitle, url = link, description = desc, color = discord.Color.blue())
+        Nembed = discord.Embed(title = noteTitle, url = link, description = desc, color = discord.Color.blue())
         self.noteList.append(Lembed)
 
     # Print out all lectures
