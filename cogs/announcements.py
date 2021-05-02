@@ -32,12 +32,56 @@ class Announcements(commands.Cog):
         time = [int(x) for x in paramList[3].split(':')]
 
         event = self.schedule.addEvent(name, desc, date[0], date[1], date[2], time[0], time[1])
-        await ctx.send(f'The following event was created: \n\t{event}')
+
+        embed = discord.Embed(
+            title = f'Event "{name}" created',
+            description = desc,
+            colour = discord.Colour.blue()
+        )
+
+        embed.set_author(
+            name = ctx.author.display_name,
+            icon_url = ctx.author.avatar_url
+        )
+
+        embed.set_thumbnail(url = "https://www.raytownschools.org//cms/lib/MO02210312/Centricity/Domain/4/support-icon-calendar.png")
+
+        embed.add_field(
+            name = "Date",
+            value = paramList[2],
+            inline = False
+        )
+
+        embed.add_field(
+            name = "Time",
+            value = f'{time[0] % 12}:{time[1]} {"pm" if (time[0] // 12 == 1) else "am"}',
+            inline = False
+        )
+
+        await self.channel.send(embed = embed)
 
     # Command to display in the console the events of the Schedule object.
     @commands.command()
     async def view_schedule(self, ctx):
-        await ctx.send(str(self.schedule))
+        embed = discord.Embed(
+            title = 'All Events',
+            colour = discord.Colour.blue()
+        )
+
+        embed.set_author(
+            name = ctx.author.display_name,
+            icon_url = ctx.author.avatar_url
+        )
+
+        for event in self.schedule.events:
+            embed.add_field(
+                name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {(event.datetime.hour % 12):02}:{event.datetime.minute:02} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
+                value = f'{event.name}:\n\t{event.desc}',
+                inline = False
+            )
+
+        await ctx.channel.purge(limit = 1)
+        await ctx.send(embed = embed)
 
     # Tasks loop that will refresh every minute and ping any events currently taking place.
     @tasks.loop(seconds = 60)
@@ -46,11 +90,21 @@ class Announcements(commands.Cog):
             currentEvents = self.schedule.checkCurrent()
             # Appropriately format the output to display each event
             if len(currentEvents) > 0:
-                string = '@here The following event(s) are taking place right now:'
+
+                embed = discord.Embed(
+                    title = 'The following event(s) are taking place right now:',
+                    colour = discord.Colour.blue()
+                )
+
                 for event in self.schedule.checkCurrent():
-                    string = f'{string}\n\t{event}'
+                    embed.add_field(
+                        name = f'{event.datetime.day:02}/{event.datetime.month:02}/{event.datetime.year:04} | {(event.datetime.hour % 12):02}:{event.datetime.minute:02} {"pm" if (event.datetime.hour // 12 == 1) else "am"}',
+                        value = f'{event.name}:\n\t{event.desc}',
+                        inline = False
+                    )
                     self.schedule.removeEvent(event.name)
-                await self.channel.send(string)
+
+                await self.channel.send("@here", embed = embed)
 
 # Cog setup
 def setup(client):
