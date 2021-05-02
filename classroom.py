@@ -1,8 +1,5 @@
-import os
 import discord
 from discord.ext import commands
-from discord.utils import get
-from discord import member
 
 class Classroom:
     """
@@ -22,14 +19,10 @@ class Classroom:
         """
         Generate a string representation of the Classroom object
         """
-        return (str(self.name) + ' class will be taught by ' + str(self.teacher_name))
+        return f'{str(self.name)} class will be taught by {str(self.teacher_name)}'
 
     def addstudent(self, discord_user_id):
         """
         Create a Student attribute using discord user id
         """
-        self.discord_user_id = discord_user_id
-        self.classlist.append(self.discord_user_id)
-
-
-
+        self.classlist.append(discord_user_id)
