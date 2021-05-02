@@ -28,12 +28,12 @@ class classroom_cogs(commands.Cog):
 
         # Create appropriate text channels and save them as local attributes so they can be accessed if required
         self.commandsChannel = await ctx.guild.create_text_channel('commands')
-        self.welcomeChannel = await ctx.guild.create_text_channel('welcome', category = category)
-        self.announcementsChannel = await ctx.guild.create_text_channel('announcements', category = category)
-        self.discussionsChannel = await ctx.guild.create_text_channel('discussions', overwrites = overwrites, category = category)
-        self.resourcesChannel = await ctx.guild.create_text_channel('resources', overwrites = overwrites, category = category)
-        self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites = overwrites, category = category)
-        self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites = overwrites, category = category)
+        self.welcomeChannel = await ctx.guild.create_text_channel('welcome', category = self.category)
+        self.announcementsChannel = await ctx.guild.create_text_channel('announcements', category = self.category)
+        self.discussionsChannel = await ctx.guild.create_text_channel('discussions', overwrites = overwrites, category = self.category)
+        self.resourcesChannel = await ctx.guild.create_text_channel('resources', overwrites = overwrites, category = self.category)
+        self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites = overwrites, category = self.category)
+        self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites = overwrites, category = self.category)
 
         # Set the channel for the announcements cog to the announcements channel just made
         self.client.get_cog('Announcements').channel = self.announcementsChannel
