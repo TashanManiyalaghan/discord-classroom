@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands, tasks
 from quiz import *
 from Helper import *
-from latex import *
 
 class Quizzes(commands.Cog):
     def __init__(self, client):
