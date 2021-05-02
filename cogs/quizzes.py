@@ -47,6 +47,7 @@ class Quizzes(commands.Cog):
     @commands.command()
     async def next_question(self, ctx):
         if self.currentQuestion < len(self.currentQuiz.questions) - 1:
+            self.answered = []
             self.currentQuestion+=1
             await self.quizChannel.send(f'Question {self.currentQuestion + 1}')
             await self.quizChannel.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
@@ -59,6 +60,7 @@ class Quizzes(commands.Cog):
         await self.quizChannel.send(f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion)}')
 
         if self.currentQuestion < len(self.currentQuiz.questions) - 1:
+            self.answered = []
             self.currentQuestion+=1
             await self.quizChannel.send(f'Question {self.currentQuestion + 1}')
             await self.quizChannel.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
@@ -68,21 +70,26 @@ class Quizzes(commands.Cog):
 
     @commands.command()
     async def answer(self, ctx, *, response):
-        print(self.currentQuestion)
-        if type(self.currentQuiz.questions[self.currentQuestion]) is MultipleChoice:
-            if int(response) == self.currentQuiz.questions[self.currentQuestion].answer:
-                await ctx.author.send('Correct answer.')
-        
-            else:
-                await ctx.author.send('Wrong answer.')
+        try:
+            self.answered.index(ctx.author)
+            await ctx.author.send('You have already answered.')
 
-        elif type(self.currentQuiz.questions[self.currentQuestion]) is Question:
-            if response == self.currentQuiz.questions[self.currentQuestion].answer:
-                await ctx.author.send('Correct answer.')
+        except:
+            if type(self.currentQuiz.questions[self.currentQuestion]) is MultipleChoice:
+                if int(response) == self.currentQuiz.questions[self.currentQuestion].answer:
+                    await ctx.author.send('Correct answer.')
         
-            else:
-                player = 201014072886427648
-                await ctx.player.send('Wrong answer.')
+                else:
+                    await ctx.author.send('Wrong answer.')
+
+            elif type(self.currentQuiz.questions[self.currentQuestion]) is Question:
+                if response == self.currentQuiz.questions[self.currentQuestion].answer:
+                    await ctx.author.send('Correct answer.')
         
+                else:
+                    await ctx.author.send('Wrong answer.')
+
+            self.answered.append(ctx.author)
+
 def setup(client):
     client.add_cog(Quizzes(client))
