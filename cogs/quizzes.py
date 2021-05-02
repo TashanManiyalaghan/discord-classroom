@@ -40,17 +40,34 @@ class Quizzes(commands.Cog):
     @commands.command()
     async def start_quiz(self, ctx, *, name):
         self.currentQuiz = self.quizzes[name]
-        self.currentQuestion = 0
+        self.currentQuestion = -1
 
     @commands.command()
-    async def next_quiz(self, ctx):
-        if self.currentQuestion < len(self.currentQuiz.questions):
+    async def next_question(self, ctx):
+        if self.currentQuestion < len(self.currentQuiz.questions) - 1:
+            self.currentQuestion+=1
             await ctx.send(f'Question {self.currentQuestion + 1}')
             await ctx.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
-            self.currentQuestion+=1
 
         else:
             await ctx.send('End of quiz.')
 
+    @commands.command()
+    async def answer(self, ctx, *, response):
+        print(self.currentQuestion)
+        if type(self.currentQuiz.questions[self.currentQuestion]) is MultipleChoice:
+            if int(response) == self.currentQuiz.questions[self.currentQuestion].answer:
+                await ctx.send('Correct answer.')
+        
+            else:
+                await ctx.send('Wrong answer.')
+
+        elif type(self.currentQuiz.questions[self.currentQuestion]) is Question:
+            if response == self.currentQuiz.questions[self.currentQuestion].answer:
+                await ctx.send('Correct answer.')
+        
+            else:
+                await ctx.send('Wrong answer.')
+        
 def setup(client):
     client.add_cog(Quizzes(client))

@@ -16,7 +16,7 @@ class MultipleChoice:
         temp = self.question
 
         for choice in self.responses:
-            temp = temp + "\n\t" + choice
+            temp = temp + "\n\t\t\t" + choice
         
         return temp
 
