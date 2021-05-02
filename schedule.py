@@ -8,7 +8,7 @@ class Schedule:
     class Event:
 
         # Constructor for Event class to create attributes, as well as instantiate datetime object.
-        def __init__(self, name, day, month, year, hour, minute, desc):
+        def __init__(self, name, desc, day, month, year, hour, minute):
             self.name = name
             self.datetime = datetime(year, month, day, hour, minute, 0, 0)
             self.desc = desc
@@ -33,7 +33,7 @@ class Schedule:
         self.events = []
 
     # addEvent function to add a new event to the Schedule object, and then sort the events appropriately.
-    def addEvent(self, name, year: int, month: int, day: int, hour: int, minute: int, desc = None):
+    def addEvent(self, name, desc, year: int, month: int, day: int, hour: int, minute: int):
         event = self.Event(name, year, month, day, hour, minute, desc)
         self.events.append(event)
         self.events.sort()
