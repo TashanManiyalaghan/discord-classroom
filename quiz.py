@@ -20,9 +20,11 @@ class MultipleChoice:
     # __str__ function for the MultipleChoice class which will return the question and each of the choices.
     def __str__(self):
         temp = self.question
+        count = 1
 
         for choice in self.responses:
-            temp = temp + "\n\t\t\t" + choice
+            temp = temp + "\n\t\t\t" + str(count) + '. ' + choice
+            count+=1
         
         return temp
 
@@ -69,3 +71,9 @@ class Quiz:
             return self.questions[number - 1].answer
         elif type(self.questions[number - 1]) is Latex:
             return self.questions[number - 1].answer
+
+    def showQuestion(self, number):
+        if type(self.questions[number - 1]) is Latex:
+            return self.questions[number - 1].question
+        else:
+            return self.questions[number - 1].question

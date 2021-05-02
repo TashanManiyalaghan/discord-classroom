@@ -48,12 +48,31 @@ class Quizzes(commands.Cog):
         paramsList = parse_inputs(params)
         quiz = paramsList[0]
         question = paramsList[1]
-        await ctx.send(f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}')
+
+        embed = discord.Embed(
+            title = quiz,
+            inline = False
+        )
+
+        embed.add_field(
+            name = f'Question {question}',
+            value = f'{self.quizzes[quiz].showQuestion(int(question))}',
+            inline = False
+        )
+
+        embed.add_field(
+            name = 'Answer',
+            value = f'The answer is: {self.quizzes[quiz].revealAnswer(int(question))}',
+            inline = False
+        )
+
+        await ctx.send(embed = embed)
 
     # start_quiz command to begin execution of the quiz.
     @commands.command()
     async def start_quiz(self, ctx, *, name):
         self.currentQuiz = self.quizzes[name]
+        self.currentName = name
         self.currentQuestion = -1
         self.quizChannel = await ctx.guild.create_text_channel(name, category = ctx.guild.categories[-1])
 
@@ -63,23 +82,80 @@ class Quizzes(commands.Cog):
         if self.currentQuestion < len(self.currentQuiz.questions) - 1:
             self.answered = []
             self.currentQuestion+=1
-            await self.quizChannel.send(f'Question {self.currentQuestion + 1}')
-            await self.quizChannel.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
+
+            embed = discord.Embed(
+                title = self.currentName,
+                inline = False
+            )
+
+            embed.add_field(
+                name = f'Question {self.currentQuestion + 1}',
+                value = f'{self.currentQuiz.questions[self.currentQuestion]}',
+                inline = False
+            )
+
+            await self.quizChannel.send(embed = embed)
+
         else:
-            await self.quizChannel.send('End of quiz.')
+            embed = discord.Embed(
+                title = self.currentName,
+                inline = False
+            )
+
+            embed.add_field(
+                name = 'End of quiz.',
+                value = 'Goob job!',
+                inline = False
+            )
+
+            await self.quizChannel.send(embed = embed)
 
     # response_next command will reveal the answer for the current question and go to the next question.
     @commands.command()
     async def response_next(self, ctx):
-        await self.quizChannel.send(f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion)}')
+        embed = discord.Embed(
+            title = self.currentName,
+            inline = False
+        )
+
+        embed.add_field(
+            name = f'Question {self.currentQuestion + 1}',
+            value = f'The answer is: {self.currentQuiz.revealAnswer(self.currentQuestion + 1)}',
+            inline = False
+        )
+
+        await self.quizChannel.send(embed = embed)
 
         if self.currentQuestion < len(self.currentQuiz.questions) - 1:
             self.answered = []
             self.currentQuestion+=1
-            await self.quizChannel.send(f'Question {self.currentQuestion + 1}')
-            await self.quizChannel.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
+
+            embed = discord.Embed(
+                title = self.currentName,
+                inline = False
+            )
+
+            embed.add_field(
+                name = f'Question {self.currentQuestion + 1}',
+                value = f'{self.currentQuiz.questions[self.currentQuestion]}',
+                inline = False
+            )
+
+            await self.quizChannel.send(embed = embed)
+
         else:
-            await self.quizChannel.send('End of quiz.')
+            embed = discord.Embed(
+                title = self.currentName,
+                inline = False
+            )
+
+            embed.add_field(
+                name = 'End of quiz.',
+                value = 'Goob job!',
+                inline = False
+            )
+
+            await self.quizChannel.send(embed = embed)
 
     # answer command which allows students to answer the question, and tell them if they got their question correct or incorrect.
     @commands.command()
