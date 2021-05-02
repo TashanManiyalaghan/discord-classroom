@@ -42,16 +42,17 @@ class Quizzes(commands.Cog):
     async def start_quiz(self, ctx, *, name):
         self.currentQuiz = self.quizzes[name]
         self.currentQuestion = -1
+        self.quizChannel = await ctx.guild.create_text_channel(name, category = ctx.guild.categories[-1])
 
     @commands.command()
     async def next_question(self, ctx):
         if self.currentQuestion < len(self.currentQuiz.questions) - 1:
             self.currentQuestion+=1
-            await ctx.send(f'Question {self.currentQuestion + 1}')
-            await ctx.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
+            await self.quizChannel.send(f'Question {self.currentQuestion + 1}')
+            await self.quizChannel.send(f'{self.currentQuiz.questions[self.currentQuestion]}')
 
         else:
-            await ctx.send('End of quiz.')
+            await self.quizChannel.send('End of quiz.')
 
     @commands.command()
     async def answer(self, ctx, *, response):
