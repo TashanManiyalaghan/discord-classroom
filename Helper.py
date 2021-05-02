@@ -1,6 +1,5 @@
 # Import necessary sympy methods to parse latex and compare latex equations.
 from sympy.parsing.latex import parse_latex
-from sympy.printing.preview import preview
 from sympy import simplify
 # Import os.remove() function to remove a file that is no longer needed
 from os import remove
@@ -38,10 +37,3 @@ def str_to_raw(s):
 # get_latex function to convert the string to a raw string, and then parse it into LaTeX.
 def get_latex(string):
     return parse_latex(str_to_raw(string))
-
-'''
-preview(expr1, viewer='file', filename='output.png')
-
-if (input("delete? ") == "y"):
-    remove("output.png")
-'''
