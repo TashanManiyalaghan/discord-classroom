@@ -1,4 +1,4 @@
-def parse_inputs(string)
+def parse_inputs(string):
 
     params = []
     param = ''
