@@ -78,8 +78,12 @@ class Lecture(commands.Cog):
 
         for x in range(len(self.lecDict)):
             if((x+1) == int(lecNum)):
-                await ctx.send(embed = self.lecDict[x])
+                #await ctx.send(embed = self.lecDict[x])
+                #await self.client.send(ctx.author, embed = self.lecDict[x])
+                await ctx.author.send(embed = self.lecDict[x])
+        await ctx.channel.purge(limit = 1)
 
 # Cog setup
 def setup(client):
     client.add_cog(Lecture(client))
+    
