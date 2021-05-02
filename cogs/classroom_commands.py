@@ -43,7 +43,7 @@ class classroom_cogs(commands.Cog):
 
         # Send appropriate messages to the various channels
         await self.welcomeChannel.send(f'Welcome everyone to {name} class, taught by {ctx.author}')
-        await self.commandsChannel.send(f'{name} class created. You\'re now the teacher {ctx.author.mention}'')
+        await self.commandsChannel.send(f'{name} class created. You\'re now the teacher {ctx.author.mention}')
         await self.commandsChannel.send('Use the commands channel for all Classroom bot commands')
 
     # Create a cog listener for the on_member_join event to add new students to the class list
