@@ -1,6 +1,7 @@
 import discord
 import asyncio
 from discord.ext import commands, tasks
+from Helper import *
 
 class Lecture(commands.Cog):
 
@@ -17,7 +18,7 @@ class Lecture(commands.Cog):
     # Adds lectures to dictionary :)
     @commands.command()
     async def addLec(self, ctx, *, params):
-        paramList = params.split('@')
+        paramList = parse_inputs(params)
         lecNum = paramList[0]
         lecName = paramList[1]
         link = paramList[2]
@@ -42,7 +43,7 @@ class Lecture(commands.Cog):
         
         while True:
             try:
-                reaction, user = await self.client.wait_for("reaction_add", check=lambda reaction, user: user == ctx.author and reaction.emoji in buttons, timeout = 300.0)
+                reaction, user = await self.client.wait_for("reaction_add", check=lambda reaction, user: user == ctx.author and reaction.emoji in buttons, timeout = 60.0)
 
             except asyncio.TimeoutError:
                 return print("test")
