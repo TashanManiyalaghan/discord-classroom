@@ -35,6 +35,15 @@ class classroom_cogs(commands.Cog):
         self.help_teacherChannel = await ctx.guild.create_text_channel('help_teacher', overwrites = overwrites, category = self.category)
         self.help_classChannel = await ctx.guild.create_text_channel('help_classmates', overwrites = overwrites, category = self.category)
 
+        # Create appropriate voice channels and save them as local attributes so they can be accessed if required
+        self.lecture_hallChannel = await ctx.guild.create_voice_channel("lecture hall", category=self.category)
+        self.study_call1Channel = await ctx.guild.create_voice_channel("study call 1", category=self.category, user_limit=5)
+        self.study_call1Channe2 = await ctx.guild.create_voice_channel("study call 2", category=self.category, user_limit=5)
+        self.study_call1Channe3 = await ctx.guild.create_voice_channel("study call 3", category=self.category, user_limit=5)
+        self.study_call1Channe4 = await ctx.guild.create_voice_channel("study call 4", category=self.category, user_limit=5)
+        self.study_call1Channe5 = await ctx.guild.create_voice_channel("study call 5", category=self.category, user_limit=5)
+        self.study_call1Channe6 = await ctx.guild.create_voice_channel("study call 6", category=self.category, user_limit=5)
+
         # Set the channel for the announcements cog to the announcements channel just made
         self.client.get_cog('Announcements').channel = self.announcementsChannel
 
