@@ -20,7 +20,7 @@ class classroom_cogs(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         self.class_1.addstudent(member.id)
-        msg = member.name + 'has joined the ' + self.class_1.name + ' class as a student'
+        msg = member.name + ' has joined the ' + self.class_1.name + ' class as a student'
         await self.newstudentsChannel.send(msg)
     
 
